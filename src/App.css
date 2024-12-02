@@ -76,3 +76,33 @@
   font-size: 24px;
   cursor: pointer;
 }
+/* src/App.css */
+.search-bar {
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-bar input {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+
+.search-bar button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  background-color: #020202;
+  color: rgb(255, 252, 252);
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.search-bar button:hover {
+  background-color: #ffffff;
+  color: #020202;
+}

@@ -12,6 +12,7 @@ const Modal = ({ movie, onClose }) => {
         />
          <h2>{movie.Title}</h2>
          <p><strong>Year:</strong> {movie.Year}</p>
+         <p><strong>Type:</strong> {movie.Type}</p>
       </div>
     </div>
   );

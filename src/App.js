@@ -1,9 +1,11 @@
+// src/App.js
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import MovieList from './components/MovieList';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Modal from './components/Modal';  // Import the Modal component
+import SearchBar from './components/SearchBar';  // Import the SearchBar component
 
 const App = () => {
   const [movies, setMovies] = useState([]);  // State for movies
@@ -12,16 +14,17 @@ const App = () => {
   const [page, setPage] = useState(1);  // Current page for pagination
   const [selectedMovie, setSelectedMovie] = useState(null);  // State for selected movie details
   const [showModal, setShowModal] = useState(false);  // State to control modal visibility
+  const [searchQuery, setSearchQuery] = useState('');  // State for search query
 
   // Fetch movies data
-  const fetchMovies = async () => {
-    const url = `https://www.omdbapi.com/?s=movie&page=${page}&apikey=263d22d8`;
+  const fetchMovies = async (query = '') => {
+    const url = `https://www.omdbapi.com/?s=${query || 'movie'}&page=${page}&apikey=263d22d8`;
 
     setLoading(true);  // Set loading to true while fetching
     try {
       const response = await fetch(url);
       const data = await response.json();
-      
+
       if (data.Response === "True") {
         setMovies(data.Search);  // Set movies data
         setError(null);  // Reset error
@@ -37,10 +40,10 @@ const App = () => {
     }
   };
 
-  // Fetch movies whenever the page changes
+  // Fetch movies whenever the page changes or the search query changes
   useEffect(() => {
-    fetchMovies();
-  }, [page]);
+    fetchMovies(searchQuery);
+  }, [page, searchQuery]);
 
   // Handle page change (pagination)
   const handlePageChange = (increment) => {
@@ -59,12 +62,19 @@ const App = () => {
     setSelectedMovie(null);  // Clear selected movie
   };
 
+  // Handle search query from SearchBar
+  const handleSearch = (query) => {
+    setSearchQuery(query);  // Update the search query
+    setPage(1);  // Reset to the first page when a new search is initiated
+  };
+
   return (
     <div className="App">
       <Header />
+      <SearchBar onSearch={handleSearch} />  {/* Add SearchBar component */}
       {error && <p style={{ color: 'red' }}>{error}</p>}  {/* Display error message if any */}
       {loading ? <p>Loading...</p> : <MovieList movies={movies} onMovieClick={onMovieClick} />}  {/* Show loading or movies */}
-      
+
       {/* Display the modal */}
       {showModal && selectedMovie && (
         <Modal movie={selectedMovie} onClose={closeModal} />
